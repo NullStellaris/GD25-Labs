@@ -12,15 +12,15 @@ public class PlayerMovement : MonoBehaviour {
     private float timeDelta;
     private int fixedUpdateRate;
     // physics variables (in world units, 1 tile = 1 world unit = 16px)
-    public float gravity = 50;
+    public float gravity = 1.1f;
     public float maxSpeed = 7;
     public float accel = 0.7f;
     public float airAccel = 0.4f;
     public float accelSmoothing = 0.5f;
     public float decel = 0.4f;
-    public float jumpAccel = 12;
-    public float varJumpGravScale = 0.12f;
-    public float varJumpDuration = 0.3f;
+    public float jumpAccel = 16;
+    public float varJumpGravScale = 0.2f;
+    public float varJumpDuration = 0.2f;
     // input state variables
     private float directionState = 0; // no need to Sign() this since its already unitized
     private bool jumpState = false;
@@ -40,7 +40,6 @@ public class PlayerMovement : MonoBehaviour {
     void Start() {
         timeDelta = Time.fixedDeltaTime;
         fixedUpdateRate = (int)(1 / Time.fixedDeltaTime);
-        Debug.Log(fixedUpdateRate);
         // Set to be 30 FPS
         Application.targetFrameRate = 60;
         marioBody = GetComponent<Rigidbody2D>();
@@ -71,6 +70,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col) {
         if (col.gameObject.CompareTag("Ground")) onGroundState = true;
+        jumped = false;
     }
 
     // FixedUpdate is called 50 times a second
@@ -105,18 +105,18 @@ public class PlayerMovement : MonoBehaviour {
         if (jumped) {
             if (!jumpReleaseState && varJumpTimer > 0) {
                 // less gravity while holding jump key
-                resultVelo.y += -gravity * varJumpGravScale * timeDelta;
+                resultVelo.y -= gravity * varJumpGravScale;
                 varJumpTimer -= timeDelta;
             }
             else {
                 // back to full grav when key up or if reached max jump
-                resultVelo.y += -gravity * timeDelta;
+                resultVelo.y -= gravity;
                 varJumpTimer = 0;
             }
         }
         else {
             // normal gravity
-            resultVelo.y += -gravity * timeDelta;
+            resultVelo.y -= gravity;
         }
         marioBody.linearVelocity = resultVelo;
 
