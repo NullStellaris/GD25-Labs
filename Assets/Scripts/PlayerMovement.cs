@@ -8,7 +8,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
+    // Input Handler
+    private UserInput ReadInput;
     // project constants
+    private Vector3 originalPos;
     private float timeDelta;
     private int fixedUpdateRate;
     // physics variables (in world units, 1 tile = 1 world unit = 16px)
@@ -24,11 +27,12 @@ public class PlayerMovement : MonoBehaviour {
     // input state variables
     private float directionState = 0; // no need to Sign() this since its already unitized
     private bool jumpState = false;
-    private bool jumpReleaseState = false;
+    private bool jumpHeldState = false;
     // game state variables
     private bool onGroundState = true;
     private float varJumpTimer = 0;
     private bool jumped = false;
+    private bool hitEnemy = false;
     // physics bodies
     private Rigidbody2D marioBody;
     // sprite variables
@@ -36,8 +40,15 @@ public class PlayerMovement : MonoBehaviour {
     // sprite state variables
     private bool faceRightState = true;
 
+    void Awake() {
+        ReadInput = new UserInput();
+    }
+
     // Start is called before the first frame update
     void Start() {
+        // enable input
+        ReadInput.Player.Enable();
+        originalPos = transform.position;
         timeDelta = Time.fixedDeltaTime;
         fixedUpdateRate = (int)(1 / Time.fixedDeltaTime);
         // Set to be 30 FPS
@@ -49,28 +60,36 @@ public class PlayerMovement : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         // We do input monitoring here since execution is guaranteed every frame
-        directionState = Input.GetAxisRaw("Horizontal");
-        if (Input.GetKeyDown("space")) {
+        directionState = ReadInput.Player.Movement.ReadValue<Vector2>().x;
+        if (ReadInput.Player.Jump.WasPressedThisFrame()) {
             jumpState = true;
         }
-        if (Input.GetKeyUp("space")) {
-            jumpReleaseState = true;
-        }
+        jumpHeldState = ReadInput.Player.Jump.IsPressed();
         // Sprite updates
         // toggle state
-        if (Input.GetKeyDown("a") && faceRightState) {
+        if (directionState == -1 && faceRightState) {
             faceRightState = false;
             marioSprite.flipX = true;
         }
-        if (Input.GetKeyDown("d") && !faceRightState) {
+        if (directionState == 1 && !faceRightState) {
             faceRightState = true;
             marioSprite.flipX = false;
         }
     }
 
     void OnCollisionEnter2D(Collision2D col) {
-        if (col.gameObject.CompareTag("Ground")) onGroundState = true;
-        jumped = false;
+        if (col.gameObject.CompareTag("Ground")) {
+            foreach (ContactPoint2D contact in col.contacts) {
+                if (contact.normal == Vector2.up) {
+                    onGroundState = true;
+                    jumped = false;
+                }
+            }
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D col) {
+        if (col.gameObject.CompareTag("Enemy")) hitEnemy = true;
     }
 
     // FixedUpdate is called 50 times a second
@@ -103,7 +122,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if (jumped) {
-            if (!jumpReleaseState && varJumpTimer > 0) {
+            if (jumpHeldState && varJumpTimer > 0) {
                 // less gravity while holding jump key
                 resultVelo.y -= gravity * varJumpGravScale;
                 varJumpTimer -= timeDelta;
@@ -122,6 +141,5 @@ public class PlayerMovement : MonoBehaviour {
 
         // clear jumping state flags
         jumpState = false;
-        jumpReleaseState = false;
     }
 }
