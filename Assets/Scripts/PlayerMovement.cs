@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody2D marioBody;
     // sprite variables
     private SpriteRenderer marioSprite;
+    public Sprite marioDefault;
+    public Sprite marioJump;
     // sprite state variables
     private bool faceRightState = true;
 
@@ -84,6 +86,12 @@ public class PlayerMovement : MonoBehaviour {
             faceRightState = true;
             marioSprite.flipX = false;
         }
+        if (jumped) {
+            marioSprite.sprite = marioJump;
+        }
+        else {
+            marioSprite.sprite = marioDefault;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col) {
@@ -104,8 +112,10 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public void OnStomp() {
-        marioBody.linearVelocityY += stompAccel;
+        marioSprite.sprite = marioJump;
+        marioBody.linearVelocityY = stompAccel;
         jumpOverGoomba.score += 5;
+        jumpOverGoomba.countScoreState = -1;
         jumpOverGoomba.DrawScore();
     }
 

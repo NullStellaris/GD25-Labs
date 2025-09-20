@@ -53,6 +53,7 @@ public class EnemyMovement : MonoBehaviour {
         transform.localScale = squishScale;
         enemyBody.bodyType = RigidbodyType2D.Static;
         SetColliders(false);
+        transform.position += 20 * Vector3.up;
         yield return new WaitForSeconds(decayTime);
         goombaSprite.enabled = false;
     }

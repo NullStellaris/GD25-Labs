@@ -890,6 +890,8 @@ MonoBehaviour:
   stompAccel: 8
   varJumpGravScale: 0.2
   varJumpDuration: 0.2
+  marioDefault: {fileID: -619052877, guid: f1bde3f95d8d049e59a4208ea4358c51, type: 3}
+  marioJump: {fileID: -96248904, guid: f1bde3f95d8d049e59a4208ea4358c51, type: 3}
   scoreText: {fileID: 1994109313}
   enemies: {fileID: 1262970555}
   jumpOverGoomba: {fileID: 202222704}
@@ -902,7 +904,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 202222698}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -953,8 +955,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4bf1b7750b96046bfc3701c4a2dc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JumpOverGoomba
-  enemyLocation: {fileID: 1667777637}
+  enemies: {fileID: 1262970555}
   scoreText: {fileID: 1994109313}
+  countScoreState: 0
   boxSize: {x: 0.71, y: 0.67, z: 0}
   maxDistance: 0.5
   layerMask:
@@ -1858,7 +1861,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0048196316, y: -0.49939942}
+  m_Offset: {x: 0.0014339685, y: -0.5078698}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1868,7 +1871,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.6655202, y: 0.12458372}
+  m_Size: {x: 0.81560826, y: 0.14152443}
   m_EdgeRadius: 0
 --- !u!114 &424991496
 MonoBehaviour:
@@ -3507,11 +3510,11 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0015544742, y: 0.003322661}
+  m_Offset: {x: 0.00052165985, y: 0.008388579}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -3521,7 +3524,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8249903, y: 1.0139707}
+  m_Size: {x: 0.85405827, y: 1.0241026}
   m_EdgeRadius: 0.02
 --- !u!114 &1027377605
 MonoBehaviour:
