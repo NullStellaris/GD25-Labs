@@ -32,8 +32,9 @@ public class JumpOverGoomba : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        jumpState = ReadInput.Player.Jump.triggered;
-
+        if (ReadInput.Player.Jump.WasPressedThisFrame()) {
+            jumpState = true;
+        }
     }
 
     void OnDrawGizmos() {
@@ -41,12 +42,15 @@ public class JumpOverGoomba : MonoBehaviour {
         Gizmos.DrawCube(transform.position - transform.up * maxDistance, boxSize);
     }
 
+    public void DrawScore() {
+        scoreText.text = "Score: " + score.ToString();
+    }
+
     void FixedUpdate() {
         // mario jumps
         if (jumpState && onGroundCheck()) {
             onGroundState = false;
             countScoreState = true;
-            Debug.Log("jumped");
         }
 
         // when jumping, and Goomba is near Mario and we haven't registered our score
@@ -54,10 +58,11 @@ public class JumpOverGoomba : MonoBehaviour {
             if (Mathf.Abs(transform.position.x - enemyLocation.position.x) < 0.5f) {
                 countScoreState = false;
                 score++;
-                scoreText.text = "Score: " + score.ToString();
-                Debug.Log("scored!");
+                DrawScore();
             }
         }
+
+        jumpState = false;
     }
 
     void OnCollisionEnter2D(Collision2D col) {
@@ -67,7 +72,6 @@ public class JumpOverGoomba : MonoBehaviour {
 
     private bool onGroundCheck() {
         if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, maxDistance, layerMask)) {
-            Debug.Log("OnGround");
             return true;
         }
         else {

@@ -6,6 +6,7 @@ using System.Runtime.ExceptionServices;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour {
     // Input Handler
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour {
     public float accelSmoothing = 0.5f;
     public float decel = 0.4f;
     public float jumpAccel = 16;
+    public float stompAccel = 8;
     public float varJumpGravScale = 0.2f;
     public float varJumpDuration = 0.2f;
     // input state variables
@@ -32,7 +34,6 @@ public class PlayerMovement : MonoBehaviour {
     private bool onGroundState = true;
     private float varJumpTimer = 0;
     private bool jumped = false;
-    private bool hitEnemy = false;
     // physics bodies
     private Rigidbody2D marioBody;
     // sprite variables
@@ -40,12 +41,20 @@ public class PlayerMovement : MonoBehaviour {
     // sprite state variables
     private bool faceRightState = true;
 
+    // other variables
+    public TextMeshProUGUI scoreText;
+    public GameObject enemies;
+    public JumpOverGoomba jumpOverGoomba;
+    public Canvas gameOverScreen;
+    public TextMeshProUGUI gameOverText;
+
     void Awake() {
         ReadInput = new UserInput();
     }
 
     // Start is called before the first frame update
     void Start() {
+        gameOverScreen.enabled = false;
         // enable input
         ReadInput.Player.Enable();
         originalPos = transform.position;
@@ -88,8 +97,16 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D col) {
-        if (col.gameObject.CompareTag("Enemy")) hitEnemy = true;
+    public void OnDamaged() {
+        gameOverScreen.enabled = true;
+        gameOverText.text = "Game Over!<br><br>Score: " + jumpOverGoomba.score.ToString();
+        Time.timeScale = 0.0f;
+    }
+
+    public void OnStomp() {
+        marioBody.linearVelocityY += stompAccel;
+        jumpOverGoomba.score += 5;
+        jumpOverGoomba.DrawScore();
     }
 
     // FixedUpdate is called 50 times a second
@@ -141,5 +158,35 @@ public class PlayerMovement : MonoBehaviour {
 
         // clear jumping state flags
         jumpState = false;
+    }
+
+    // other methods
+    public void RestartButtonCallback(int input) {
+        // reset everything
+        ResetGame();
+        // resume time
+        Time.timeScale = 1.0f;
+    }
+
+    private void ResetGame() {
+        // clear gameOver screen
+        gameOverScreen.enabled = false;
+        // cancel any momentum
+        marioBody.linearVelocity = Vector2.zero;
+        // reset position
+        marioBody.transform.position = originalPos;
+        // reset sprite direction
+        faceRightState = true;
+        marioSprite.flipX = false;
+        // reset score
+        scoreText.text = "Score: 0";
+        // reset Goomba
+        EnemyMovement[] enemyScripts = enemies.GetComponentsInChildren<EnemyMovement>();
+        foreach (EnemyMovement enemy in enemyScripts) {
+            if (enemy) {
+                enemy.Reset();
+            }
+        }
+        jumpOverGoomba.score = 0;
     }
 }
