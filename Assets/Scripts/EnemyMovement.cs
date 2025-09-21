@@ -7,32 +7,32 @@ public class EnemyMovement : MonoBehaviour {
     public Vector3 originalPos;
     public float moveSpeed = 1.5f;
     private float originalSpeed;
-    public float decayTime = 1f;
-    public bool alive = true;
+    public float decayTime = 1.5f;
+    private bool alive = true;
     private Vector2 velocity;
     private Rigidbody2D enemyBody;
-    private SpriteRenderer goombaSprite;
-    private Vector3 originalScale;
+    public SpriteRenderer goombaSprite;
     private bool hitWall = false;
+
+    public Animator goombaAnimator;
 
     void Start() {
         enemyBody = GetComponent<Rigidbody2D>();
         // get starting position
         originalPos = transform.localPosition;
-        goombaSprite = GetComponent<SpriteRenderer>();
-        originalScale = transform.localScale;
         // get original movement params
         originalSpeed = moveSpeed;
+        goombaAnimator.SetBool("onDeath", false);
     }
 
     public void Reset() {
         alive = true;
-        transform.localScale = originalScale;
         goombaSprite.enabled = true;
         SetColliders(true);
         enemyBody.bodyType = RigidbodyType2D.Dynamic;
         enemyBody.transform.localPosition = originalPos;
         moveSpeed = originalSpeed;
+        goombaAnimator.SetBool("onDeath", false);
     }
 
     void Movegoomba() {
@@ -48,13 +48,11 @@ public class EnemyMovement : MonoBehaviour {
 
     IEnumerator GoombaStomped() {
         alive = false;
-        Vector3 squishScale = originalScale;
-        squishScale.y = 0.3f;
-        transform.localScale = squishScale;
+        goombaAnimator.SetBool("onDeath", true);
         enemyBody.bodyType = RigidbodyType2D.Static;
         SetColliders(false);
-        transform.position += 20 * Vector3.up;
         yield return new WaitForSeconds(decayTime);
+        transform.position += 20 * Vector3.up;
         goombaSprite.enabled = false;
     }
 
@@ -84,5 +82,6 @@ public class EnemyMovement : MonoBehaviour {
         if (alive) {
             Movegoomba();
         }
+        goombaAnimator.SetFloat("xSpeed", Mathf.Abs(moveSpeed));
     }
 }

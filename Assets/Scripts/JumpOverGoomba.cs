@@ -5,6 +5,8 @@ using TMPro;
 using Unity.VisualScripting;
 
 public class JumpOverGoomba : MonoBehaviour {
+
+    PlayerMovement player;
     public GameObject enemies;
     public TextMeshProUGUI scoreText;
     private bool onGroundState;
@@ -13,9 +15,7 @@ public class JumpOverGoomba : MonoBehaviour {
     public int score = 0; // we don't want this to show up in the inspector
 
     public int countScoreState = -1;
-    public Vector3 boxSize;
-    public float maxDistance;
-    public LayerMask layerMask;
+
 
     // Input Processor
     private UserInput ReadInput;
@@ -29,6 +29,7 @@ public class JumpOverGoomba : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         ReadInput.Player.Enable();
+        player = transform.GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -38,10 +39,6 @@ public class JumpOverGoomba : MonoBehaviour {
         }
     }
 
-    void OnDrawGizmos() {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(transform.position - transform.up * maxDistance, boxSize);
-    }
 
     public void DrawScore() {
         scoreText.text = "Score: " + score.ToString();
@@ -49,7 +46,7 @@ public class JumpOverGoomba : MonoBehaviour {
 
     void FixedUpdate() {
         // mario jumps
-        if (jumpState && onGroundCheck()) {
+        if (jumpState && player.OnGroundCheck()) {
             onGroundState = false;
             countScoreState = 0;
         }
@@ -75,16 +72,6 @@ public class JumpOverGoomba : MonoBehaviour {
                 DrawScore();
             }
             countScoreState = -1;
-        }
-    }
-
-
-    private bool onGroundCheck() {
-        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, maxDistance, layerMask)) {
-            return true;
-        }
-        else {
-            return false;
         }
     }
 }
