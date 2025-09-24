@@ -70,5 +70,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "GD25-Labs.sln"
+    "dotnet.defaultSolution": "Lab-1.sln"
 }

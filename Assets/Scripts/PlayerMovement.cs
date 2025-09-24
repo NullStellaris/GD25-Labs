@@ -180,7 +180,7 @@ public class PlayerMovement : MonoBehaviour {
                 skidding = false;
                 // if exceeding max, trail off velocity exponentially by smoothing factor
                 if (Math.Abs(resultVelo.x + resultAccel * directionState) > maxSpeed * (sprintState ? sprintMul : 1)) {
-                    resultAccel = (maxSpeed - Mathf.Abs(resultVelo.x)) * accelSmoothing;
+                    resultAccel = ((maxSpeed * (sprintState ? sprintMul : 1)) - Mathf.Abs(resultVelo.x)) * accelSmoothing;
                 }
             }
             resultVelo.x += resultAccel * directionState;
