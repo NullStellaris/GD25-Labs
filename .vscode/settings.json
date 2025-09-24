@@ -1,9 +1,5 @@
 {
     "files.exclude": {
-        "**/*.*.meta": true,
-        "**/Library": true,
-        "**/ProjectSettings": true,
-        "**/Temp": true,
         "**/.DS_Store": true,
         "**/.git": true,
         "**/.vs": true,
@@ -64,11 +60,11 @@
         "*.asset": "yaml",
         "*.meta": "yaml",
         "*.prefab": "yaml",
-        "*.unity": "yaml"
+        "*.unity": "yaml",
     },
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
-        "*.sln": "*.csproj"
+        "*.sln": "*.csproj",
     },
-    "dotnet.defaultSolution": "GD25-Labs.sln"
+    "dotnet.defaultSolution": "Lab1.sln"
 }
