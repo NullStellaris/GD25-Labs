@@ -45,7 +45,7 @@ public class EnemyMovement : MonoBehaviour {
             col.enabled = state;
         }
     }
-
+    //When dead
     IEnumerator GoombaStomped() {
         alive = false;
         goombaAnimator.SetBool("onDeath", true);
