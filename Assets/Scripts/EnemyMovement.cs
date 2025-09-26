@@ -25,6 +25,8 @@ public class EnemyMovement : MonoBehaviour {
         goombaAnimator.SetBool("onDeath", false);
     }
 
+
+
     public void Reset() {
         alive = true;
         goombaSprite.enabled = true;
@@ -51,7 +53,7 @@ public class EnemyMovement : MonoBehaviour {
         goombaAnimator.SetBool("onDeath", true);
         enemyBody.bodyType = RigidbodyType2D.Static;
         SetColliders(false);
-        yield return new WaitForSeconds(decayTime);
+        yield return new WaitForSeconds(0);
         transform.position += 20 * Vector3.up;
         goombaSprite.enabled = false;
     }
