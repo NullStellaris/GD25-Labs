@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour {
     // project constants
     private Vector3 originalPos;
     private float timeDelta;
-    private int fixedUpdateRate;
     // physics variables (in world units, 1 tile = 1 world unit = 16px)
     public float gravity = 1.1f;
     public float maxSpeed = 6.5f;
@@ -33,7 +32,7 @@ public class PlayerMovement : MonoBehaviour {
     // physics checking variables
     public Vector3 boxSize;
     public float maxDistance;
-    public LayerMask layerMask;
+    private LayerMask stepMask;
     // input state variables
     private float directionState = 0; // no need to Sign() this since its already unitized
     private bool jumpState = false;
@@ -78,10 +77,13 @@ public class PlayerMovement : MonoBehaviour {
         ReadInput.Player.Enable();
         originalPos = transform.position;
         timeDelta = Time.fixedDeltaTime;
-        fixedUpdateRate = (int)(1 / Time.fixedDeltaTime);
         // Set to be 30 FPS
         Application.targetFrameRate = 60;
         marioBody = GetComponent<Rigidbody2D>();
+        // Get layers of interest
+        int groundLayer = 1 << LayerMask.NameToLayer("Ground");
+        int obstacleLayer = 1 << LayerMask.NameToLayer("Obstacles");
+        stepMask = groundLayer | obstacleLayer;
     }
 
     // Update is called once per frame
@@ -95,11 +97,11 @@ public class PlayerMovement : MonoBehaviour {
         jumpHeldState = ReadInput.Player.Jump.IsPressed();
         // Sprite updates
         // toggle state
-        if (directionState == -1 && faceRightState) {
+        if (directionState == -1 && faceRightState && alive) {
             faceRightState = false;
             marioSprite.flipX = true;
         }
-        if (directionState == 1 && !faceRightState) {
+        if (directionState == 1 && !faceRightState && alive) {
             faceRightState = true;
             marioSprite.flipX = false;
         }
@@ -122,7 +124,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D col) {
-        if (col.gameObject.CompareTag("Ground")) {
+        if (col.gameObject.CompareTag("Ground") || col.gameObject.CompareTag("Obstacle")) {
             foreach (ContactPoint2D contact in col.contacts) {
                 if (contact.normal == Vector2.up) {
                     onGroundState = true;
@@ -134,7 +136,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public bool OnGroundCheck() {
-        return (bool)Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, maxDistance, layerMask);
+        return (bool)Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, maxDistance, stepMask);
     }
 
     IEnumerator GameOver() {
@@ -159,6 +161,10 @@ public class PlayerMovement : MonoBehaviour {
         jumpOverGoomba.countScoreState = -1;
         jumpOverGoomba.DrawScore();
         jukebox.PlaySimul("stomp", false);
+    }
+
+    public void OnBonk(float force) {
+        marioBody.linearVelocityY = -force;
     }
 
     // FixedUpdate is called 50 times a second
@@ -248,7 +254,7 @@ public class PlayerMovement : MonoBehaviour {
         EnemyMovement[] enemyScripts = enemies.GetComponentsInChildren<EnemyMovement>();
         foreach (EnemyMovement enemy in enemyScripts) {
             if (enemy) {
-                enemy.Reset();
+                enemy.OnReset();
             }
         }
         jumpOverGoomba.score = 0;

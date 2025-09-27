@@ -25,18 +25,6 @@ public class EnemyMovement : MonoBehaviour {
         goombaAnimator.SetBool("onDeath", false);
     }
 
-
-
-    public void Reset() {
-        alive = true;
-        goombaSprite.enabled = true;
-        SetColliders(true);
-        enemyBody.bodyType = RigidbodyType2D.Dynamic;
-        enemyBody.transform.localPosition = originalPos;
-        moveSpeed = originalSpeed;
-        goombaAnimator.SetBool("onDeath", false);
-    }
-
     void Movegoomba() {
         enemyBody.linearVelocityX = velocity.x;
     }
@@ -48,14 +36,11 @@ public class EnemyMovement : MonoBehaviour {
         }
     }
 
-    IEnumerator GoombaStomped() {
+    void GoombaStomped() {
         alive = false;
         goombaAnimator.SetBool("onDeath", true);
         enemyBody.bodyType = RigidbodyType2D.Static;
         SetColliders(false);
-        yield return new WaitForSeconds(0);
-        transform.position += 20 * Vector3.up;
-        goombaSprite.enabled = false;
     }
 
     void OnCollisionEnter2D(Collision2D col) {
@@ -70,7 +55,7 @@ public class EnemyMovement : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.CompareTag("Weapon")) {
-            StartCoroutine(GoombaStomped());
+            GoombaStomped();
         }
     }
 
@@ -85,5 +70,15 @@ public class EnemyMovement : MonoBehaviour {
             Movegoomba();
         }
         goombaAnimator.SetFloat("xSpeed", Mathf.Abs(moveSpeed));
+    }
+
+    public void OnReset() {
+        alive = true;
+        goombaSprite.enabled = true;
+        SetColliders(true);
+        enemyBody.bodyType = RigidbodyType2D.Dynamic;
+        enemyBody.transform.localPosition = originalPos;
+        moveSpeed = originalSpeed;
+        goombaAnimator.SetBool("onDeath", false);
     }
 }
