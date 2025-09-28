@@ -6,15 +6,14 @@ using System.Runtime.ExceptionServices;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour {
     // Input Handler
     private UserInput ReadInput;
     // project constants
     private Vector3 originalPos;
-    private float timeDelta;
     // physics variables (in world units, 1 tile = 1 world unit = 16px)
     public float gravity = 1.1f;
     public float maxSpeed = 6.5f;
@@ -34,12 +33,13 @@ public class PlayerMovement : MonoBehaviour {
     public float maxDistance;
     private LayerMask stepMask;
     // input state variables
-    private float directionState = 0; // no need to Sign() this since its already unitized
-    private bool jumpState = false;
-    private bool jumpHeldState = false;
-    private bool sprintState = false;
+    [System.NonSerialized] public float directionState = 0; // no need to Sign() this since its already unitized
+    [System.NonSerialized] public bool jumpState = false;
+    [System.NonSerialized] public bool inJump = false;
+    [System.NonSerialized] public bool jumpHeldState = false;
+    [System.NonSerialized] public bool sprintState = false;
     // game state variables
-    private bool onGroundState = true;
+    [System.NonSerialized] public bool onGroundState = true;
     private float varJumpTimer = 0;
     private bool skidding = false;
     private bool jumped = false;
@@ -52,14 +52,6 @@ public class PlayerMovement : MonoBehaviour {
     // sprite state variables
     private bool faceRightState = true;
 
-    // other variables
-    public TextMeshProUGUI scoreText;
-    public GameObject enemies;
-    public JumpOverGoomba jumpOverGoomba;
-    public Canvas gameOverScreen;
-    public TextMeshProUGUI gameOverText;
-    private Jukebox jukebox;
-
     // animation variables
     public Animator marioAnimator;
 
@@ -69,14 +61,10 @@ public class PlayerMovement : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        jukebox = GetComponent<Jukebox>();
-        jukebox.PlayOver("level", true);
         alive = true;
-        gameOverScreen.enabled = false;
         // enable input
         ReadInput.Player.Enable();
         originalPos = transform.position;
-        timeDelta = Time.fixedDeltaTime;
         // Set to be 30 FPS
         Application.targetFrameRate = 60;
         marioBody = GetComponent<Rigidbody2D>();
@@ -91,10 +79,11 @@ public class PlayerMovement : MonoBehaviour {
         // We do input monitoring here since execution is guaranteed every frame
         directionState = ReadInput.Player.Movement.ReadValue<Vector2>().x;
         sprintState = ReadInput.Player.Sprint.IsPressed();
-        if (ReadInput.Player.Jump.WasPressedThisFrame()) {
-            jumpState = true;
-        }
+        jumpState = ReadInput.Player.Jump.WasPressedThisFrame();
         jumpHeldState = ReadInput.Player.Jump.IsPressed();
+        if (jumpState) {
+            inJump = true;
+        }
         // Sprite updates
         // toggle state
         if (directionState == -1 && faceRightState && alive) {
@@ -106,7 +95,6 @@ public class PlayerMovement : MonoBehaviour {
             marioSprite.flipX = false;
         }
         marioAnimator.SetBool("onJump", jumped || stomped);
-        marioAnimator.SetBool("onDeath", !alive);
         marioAnimator.SetBool("onSkid", skidding);
         marioAnimator.SetFloat("xSpeed", Mathf.Abs(marioBody.linearVelocityX));
     }
@@ -114,13 +102,6 @@ public class PlayerMovement : MonoBehaviour {
     void OnDrawGizmos() {
         Gizmos.color = Color.yellow;
         Gizmos.DrawCube(transform.position - transform.up * maxDistance, boxSize);
-    }
-
-    void SetButtonsInteractable(bool state) {
-        Button[] buttons = FindObjectsByType<Button>(FindObjectsSortMode.None);
-        foreach (Button button in buttons) {
-            button.interactable = state;
-        }
     }
 
     void OnCollisionEnter2D(Collision2D col) {
@@ -139,31 +120,23 @@ public class PlayerMovement : MonoBehaviour {
         return (bool)Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, maxDistance, stepMask);
     }
 
-    IEnumerator GameOver() {
-        Time.timeScale = 0.0f;
+    public UnityEvent onDamaged;
+    [ContextMenu("Kill Player")]
+    public void Damaged() {
         alive = false;
-        SetButtonsInteractable(false);
-        jukebox.PlayOver("dead", false);
-        yield return new WaitForSecondsRealtime(3.5f);
-        gameOverScreen.enabled = true;
-        SetButtonsInteractable(true);
-        gameOverText.text = "Game Over!<br><br>Score: " + jumpOverGoomba.score.ToString();
+        marioAnimator.SetTrigger("onDeath");
+        onDamaged.Invoke();
     }
 
-    public void OnDamaged() {
-        StartCoroutine(GameOver());
-    }
-
-    public void OnStomp() {
+    public UnityEvent<int> onScore;
+    public void Stomp() {
         stomped = true;
         marioBody.linearVelocityY = stompAccel;
-        jumpOverGoomba.score += 5;
-        jumpOverGoomba.countScoreState = -1;
-        jumpOverGoomba.DrawScore();
-        jukebox.PlaySimul("stomp", false);
+        Jukebox.Instance.PlaySimul("stomp");
+        onScore.Invoke(5);
     }
 
-    public void OnBonk(float force) {
+    public void Bonk(float force) {
         marioBody.linearVelocityY = -force;
     }
 
@@ -177,7 +150,7 @@ public class PlayerMovement : MonoBehaviour {
         // read input state and calculate horizontal acceleration/force
         if (directionState != 0) {
             if (Mathf.Sign(marioBody.linearVelocityX) != directionState && Mathf.Abs(marioBody.linearVelocityX) > skidThreshold * maxSpeed && OnGroundCheck()) {
-                jukebox.PlaySimul("twirl", false);
+                Jukebox.Instance.PlaySimul("twirl");
                 skidding = true;
                 resultAccel = skidDecel;
             }
@@ -197,20 +170,20 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // jumping physics
-        if (jumpState && onGroundState && OnGroundCheck()) {
+        if (inJump && onGroundState && OnGroundCheck()) {
             // start jump
             resultVelo.y = jumpAccel * (Mathf.Abs(marioBody.linearVelocityX) > maxSpeed ? sprintMul : 1);
             onGroundState = false;
             jumped = true;
             varJumpTimer = varJumpDuration;
-            jukebox.PlaySimul("jump", false);
+            Jukebox.Instance.PlaySimul("jump");
         }
 
         if (jumped) {
             if (jumpHeldState && varJumpTimer > 0) {
                 // less gravity while holding jump key
                 resultVelo.y -= gravity * varJumpGravScale;
-                varJumpTimer -= timeDelta;
+                varJumpTimer -= Time.fixedDeltaTime;
             }
             else {
                 // back to full grav when key up or if reached max jump
@@ -225,22 +198,21 @@ public class PlayerMovement : MonoBehaviour {
         marioBody.linearVelocity = resultVelo;
 
         // clear jumping state flags
-        jumpState = false;
+        inJump = false;
     }
 
-    // other methods
-    public void RestartButtonCallback(int input) {
-        // reset everything
-        ResetGame();
-        // resume time
-        Time.timeScale = 1.0f;
+    void OnEnable() {
+        GameManager.GlobalReset += OnReset;
     }
 
-    private void ResetGame() {
+    void OnDisable() {
+        GameManager.GlobalReset -= OnReset;
+    }
+
+    void OnReset() {
         // resurrect mario with necromancy
         alive = true;
-        // clear gameOver screen
-        gameOverScreen.enabled = false;
+        marioAnimator.SetTrigger("onReset");
         // cancel any momentum
         marioBody.linearVelocity = Vector2.zero;
         // reset position
@@ -248,17 +220,5 @@ public class PlayerMovement : MonoBehaviour {
         // reset sprite direction
         faceRightState = true;
         marioSprite.flipX = false;
-        // reset score
-        scoreText.text = "Score: 0";
-        // reset Goomba
-        EnemyMovement[] enemyScripts = enemies.GetComponentsInChildren<EnemyMovement>();
-        foreach (EnemyMovement enemy in enemyScripts) {
-            if (enemy) {
-                enemy.OnReset();
-            }
-        }
-        jumpOverGoomba.score = 0;
-        // reset level audio
-        jukebox.PlayOver("level", false);
     }
 }

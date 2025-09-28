@@ -8,7 +8,7 @@ public class MarioHitbox : MonoBehaviour {
     }
     void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.CompareTag("Enemy")) {
-            player.OnDamaged();
+            player.Damaged();
         }
     }
 }

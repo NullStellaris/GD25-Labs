@@ -72,6 +72,14 @@ public class EnemyMovement : MonoBehaviour {
         goombaAnimator.SetFloat("xSpeed", Mathf.Abs(moveSpeed));
     }
 
+    void OnEnable() {
+        GameManager.GlobalReset += OnReset;
+    }
+
+    void OnDisable() {
+        GameManager.GlobalReset -= OnReset;
+    }
+
     public void OnReset() {
         alive = true;
         goombaSprite.enabled = true;

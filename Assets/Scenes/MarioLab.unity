@@ -207,8 +207,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 202222702}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 1849878101}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: RestartButtonCallback
         m_Mode: 3
         m_Arguments:
@@ -257,6 +257,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 112094575}
   m_CullTransparentMesh: 1
+--- !u!1 &136683599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 136683601}
+  - component: {fileID: 136683600}
+  m_Layer: 0
+  m_Name: Jukebox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &136683600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136683599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 932023c88beb2d340a916bcb76c16389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jukebox
+  tracks:
+  - name: level
+    clip: {fileID: 8300000, guid: ea5aa982845407a4dafea14c294fe763, type: 3}
+    volume: 0.5
+    loop: 1
+    source: {fileID: 0}
+  - name: dead
+    clip: {fileID: 8300000, guid: d7ef0ed7edbf8454f9233a3897bde303, type: 3}
+    volume: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: jump
+    clip: {fileID: 8300000, guid: 763fddba17a7f294ea309e1cad19282d, type: 3}
+    volume: 0.6
+    loop: 0
+    source: {fileID: 0}
+  - name: stomp
+    clip: {fileID: 8300000, guid: 6e40e0dd1734ae34c8a7c981417971f2, type: 3}
+    volume: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: twirl
+    clip: {fileID: 8300000, guid: 0f7eefb0fa84e8945b31fe47e06833c8, type: 3}
+    volume: 0.3
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &136683601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136683599}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.10636, y: 5.52063, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &139378415
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,8 +641,6 @@ GameObject:
   - component: {fileID: 202222701}
   - component: {fileID: 202222703}
   - component: {fileID: 202222702}
-  - component: {fileID: 202222704}
-  - component: {fileID: 202222706}
   m_Layer: 0
   m_Name: Mario
   m_TagString: Player
@@ -653,12 +721,13 @@ MonoBehaviour:
   boxSize: {x: 0.83, y: 0.17, z: 0}
   maxDistance: 0.52
   marioSprite: {fileID: 442141747}
-  scoreText: {fileID: 1994109313}
-  enemies: {fileID: 1262970555}
-  jumpOverGoomba: {fileID: 202222704}
-  gameOverScreen: {fileID: 1783926570}
-  gameOverText: {fileID: 1508153330}
   marioAnimator: {fileID: 442141746}
+  onDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+  onScore:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &202222703
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -705,21 +774,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.8249903, y: 1.0139707}
   m_EdgeRadius: 0.02
---- !u!114 &202222704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 202222698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd4bf1b7750b96046bfc3701c4a2dc42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JumpOverGoomba
-  enemies: {fileID: 1262970555}
-  scoreText: {fileID: 1994109313}
-  countScoreState: 0
 --- !u!114 &202222705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,19 +804,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &202222706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 202222698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 932023c88beb2d340a916bcb76c16389, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Jukebox
-  audioLibrary: {fileID: 719072987}
 --- !u!1001 &295702058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1427,7 +1468,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: d601c5c2bfb07b84e82031dc10173930, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -2381,7 +2422,7 @@ Transform:
   m_GameObject: {fileID: 719072987}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.11527, y: 7.64156, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2684,8 +2725,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 202222702}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 1849878101}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: RestartButtonCallback
         m_Mode: 3
         m_Arguments:
@@ -3762,7 +3803,7 @@ GameObject:
   - component: {fileID: 1508153331}
   - component: {fileID: 1508153330}
   m_Layer: 5
-  m_Name: Splash Text Stats
+  m_Name: Game Over Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4825,6 +4866,56 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24fadceb9c546164c836b1ca0a56435d, type: 3}
+--- !u!1 &1849878099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1849878100}
+  - component: {fileID: 1849878101}
+  m_Layer: 0
+  m_Name: CoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &1849878100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849878099}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1849878101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849878099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73c2ed3e01f4ce9428d0303b1049513a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  player: {fileID: 202222702}
+  enemies: {fileID: 1262970555}
+  obstacles: {fileID: 340067208}
+  gameOverScreen: {fileID: 1783926570}
+  scoreText: {fileID: 1994109313}
+  gameOverText: {fileID: 1508153330}
 --- !u!1 &1867366739
 GameObject:
   m_ObjectHideFlags: 0
@@ -5122,7 +5213,7 @@ GameObject:
   - component: {fileID: 1994109314}
   - component: {fileID: 1994109313}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Score Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6049,6 +6140,7 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1849878100}
   - {fileID: 172156602}
   - {fileID: 939286380}
   - {fileID: 1951825057}
@@ -6062,3 +6154,4 @@ SceneRoots:
   - {fileID: 689162501}
   - {fileID: 1783926571}
   - {fileID: 719072989}
+  - {fileID: 136683601}

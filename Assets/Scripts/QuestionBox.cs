@@ -30,16 +30,22 @@ public class QuestionBox : MonoBehaviour {
                 if (contact.normal == Vector2.up) {
                     box.bodyType = RigidbodyType2D.Dynamic;
                     box.AddForce(Vector2.up * 50, ForceMode2D.Impulse);
-                    col.gameObject.GetComponent<PlayerMovement>().OnBonk(bonkStrength);
+                    col.gameObject.GetComponent<PlayerMovement>().Bonk(bonkStrength);
                     sproinged = true;
                 }
             }
         }
     }
 
+    void OnEnable() {
+        GameManager.GlobalReset += OnReset;
+    }
+
+    void OnDisable() {
+        GameManager.GlobalReset -= OnReset;
+    }
+
     public void OnReset() {
         sproinged = false;
     }
-
-
 }
