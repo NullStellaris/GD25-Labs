@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour {
         jumpState = ReadInput.Player.Jump.WasPressedThisFrame();
         jumpHeldState = ReadInput.Player.Jump.IsPressed();
         if (jumpState) {
-            inJump = true;
+            jumped = true;
         }
         // Sprite updates
         // toggle state
@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour {
             faceRightState = true;
             marioSprite.flipX = false;
         }
-        marioAnimator.SetBool("onJump", jumped || stomped);
+        marioAnimator.SetBool("onJump", inJump || stomped);
         marioAnimator.SetBool("onSkid", skidding);
         marioAnimator.SetFloat("xSpeed", Mathf.Abs(marioBody.linearVelocityX));
     }
@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour {
             foreach (ContactPoint2D contact in col.contacts) {
                 if (contact.normal == Vector2.up) {
                     onGroundState = true;
-                    jumped = false;
+                    inJump = false;
                     stomped = false;
                 }
             }
@@ -120,20 +120,18 @@ public class PlayerMovement : MonoBehaviour {
         return (bool)Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, maxDistance, stepMask);
     }
 
-    public UnityEvent onDamaged;
     [ContextMenu("Kill Player")]
     public void Damaged() {
         alive = false;
         marioAnimator.SetTrigger("onDeath");
-        onDamaged.Invoke();
+        GameManager.Instance.OnPlayerDeath();
     }
 
-    public UnityEvent<int> onScore;
     public void Stomp() {
         stomped = true;
         marioBody.linearVelocityY = stompAccel;
         Jukebox.Instance.PlaySimul("stomp");
-        onScore.Invoke(5);
+        GameManager.Instance.OnScore(2);
     }
 
     public void Bonk(float force) {
@@ -158,7 +156,7 @@ public class PlayerMovement : MonoBehaviour {
                 resultAccel *= sprintState ? sprintMul : 1;
                 skidding = false;
                 // if exceeding max, trail off velocity exponentially by smoothing factor
-                if (Math.Abs(resultVelo.x + resultAccel * directionState) > maxSpeed * (sprintState ? sprintMul : 1)) {
+                if (Math.Abs(resultVelo.x + resultAccel * directionState) >= maxSpeed * (sprintState ? sprintMul : 1)) {
                     resultAccel = ((maxSpeed * (sprintState ? sprintMul : 1)) - Mathf.Abs(resultVelo.x)) * accelSmoothing;
                 }
             }
@@ -170,16 +168,16 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // jumping physics
-        if (inJump && onGroundState && OnGroundCheck()) {
+        if (jumped && onGroundState && OnGroundCheck()) {
             // start jump
             resultVelo.y = jumpAccel * (Mathf.Abs(marioBody.linearVelocityX) > maxSpeed ? sprintMul : 1);
             onGroundState = false;
-            jumped = true;
+            inJump = true;
             varJumpTimer = varJumpDuration;
             Jukebox.Instance.PlaySimul("jump");
         }
 
-        if (jumped) {
+        if (inJump) {
             if (jumpHeldState && varJumpTimer > 0) {
                 // less gravity while holding jump key
                 resultVelo.y -= gravity * varJumpGravScale;
@@ -198,7 +196,7 @@ public class PlayerMovement : MonoBehaviour {
         marioBody.linearVelocity = resultVelo;
 
         // clear jumping state flags
-        inJump = false;
+        jumped = false;
     }
 
     void OnEnable() {

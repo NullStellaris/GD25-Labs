@@ -38,16 +38,6 @@ public class GameManager : MonoBehaviour {
         gameOverScreen.enabled = false;
     }
 
-    void OnEnable() {
-        player.onDamaged.AddListener(HandlePlayerDeath);
-        player.onScore.AddListener(HandleScore);
-    }
-
-    void OnDisable() {
-        player.onDamaged.RemoveListener(HandlePlayerDeath);
-        player.onScore.RemoveListener(HandleScore);
-    }
-
     void SetButtonsInteractable(bool state) {
         Button[] buttons = FindObjectsByType<Button>(FindObjectsSortMode.None);
         foreach (Button button in buttons) {
@@ -59,12 +49,12 @@ public class GameManager : MonoBehaviour {
         scoreText.text = "Score: " + score.ToString();
     }
 
-    void HandleScore(int gain) {
+    public void OnScore(int gain) {
         score += gain;
         DrawScore();
     }
 
-    void HandlePlayerDeath() {
+    public void OnPlayerDeath() {
         StartCoroutine(GameOver());
     }
 
@@ -98,27 +88,7 @@ public class GameManager : MonoBehaviour {
         GlobalReset?.Invoke();
     }
 
-    void FixedUpdate() {
-        // mario jumps
-        if (player.jumpState) {
-            countScoreState = 0;
-        }
+    void Update() {
 
-        // when jumping, and Goomba is near Mario and we haven't registered our score
-        if (!player.onGroundState && countScoreState == 0) {
-            Transform[] enemyLocations = enemies.GetComponentsInChildren<Transform>();
-            foreach (Transform enemyLocation in enemyLocations) {
-                if (Mathf.Abs(transform.position.x - enemyLocation.position.x) < 0.5f && enemyLocation.gameObject.CompareTag("Enemy") && enemyLocation.position.y < transform.position.y) {
-                    countScoreState = 1;
-                }
-            }
-        }
-        else if (player.onGroundState) {
-            if (countScoreState == 1) {
-                score++;
-                DrawScore();
-            }
-            countScoreState = -1;
-        }
     }
 }

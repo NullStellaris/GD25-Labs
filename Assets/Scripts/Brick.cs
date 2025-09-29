@@ -2,12 +2,10 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class QuestionBox : MonoBehaviour {
+public class Brick : MonoBehaviour {
     private Rigidbody2D box;
     private Vector3 origin;
     public float bonkStrength = 5;
-
-    public Animator questionAnimator;
     public GameObject prizeContainer;
     private ItemLogic prize;
     void Start() {
@@ -25,16 +23,15 @@ public class QuestionBox : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D col) {
-        if (col.gameObject.CompareTag("Player") && !prize.IsUsed()) {
+        if (col.gameObject.CompareTag("Player")) {
             foreach (ContactPoint2D contact in col.contacts) {
                 if (contact.normal == Vector2.up) {
                     PlayerMovement player = col.gameObject.GetComponent<PlayerMovement>();
                     box.bodyType = RigidbodyType2D.Dynamic;
                     box.AddForce(Vector2.up * 50, ForceMode2D.Impulse);
                     player.Bonk(bonkStrength);
-                    prize.OnSpawn();
-                    if (prize.IsUsed()) {
-                        questionAnimator.SetTrigger("onSproing");
+                    if (prize != null && !prize.IsUsed()) {
+                        prize.OnSpawn();
                     }
                     return;
                 }
@@ -51,7 +48,8 @@ public class QuestionBox : MonoBehaviour {
     }
 
     public void OnReset() {
-        prize.OnReset();
-        questionAnimator.SetTrigger("onReset");
+        if (prize != null) {
+            prize.OnReset();
+        }
     }
 }
