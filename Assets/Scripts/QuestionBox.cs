@@ -40,6 +40,7 @@ public class QuestionBox : MonoBehaviour {
                     box.bodyType = RigidbodyType2D.Dynamic;
                     box.AddForce(Vector2.up * 50, ForceMode2D.Impulse);
                     player.Bonk(bonkStrength);
+                    GameManager.Instance.mixer.SetFloat("Pitch", 1.0f);
                     prize.OnSpawn();
                     if (prize.GetUses() <= 0) {
                         questionAnimator.SetTrigger("onSproing");

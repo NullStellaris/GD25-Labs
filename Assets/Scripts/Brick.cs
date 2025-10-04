@@ -39,6 +39,7 @@ public class Brick : MonoBehaviour {
                     box.bodyType = RigidbodyType2D.Dynamic;
                     box.AddForce(Vector2.up * 50, ForceMode2D.Impulse);
                     player.Bonk(bonkStrength);
+                    GameManager.Instance.mixer.SetFloat("Pitch", 1.0f);
                     if (prize != null && prize.GetUses() > 0) {
                         prize.OnSpawn();
                         UpdatePitch();
@@ -50,7 +51,7 @@ public class Brick : MonoBehaviour {
     }
 
     void UpdatePitch() {
-        float shiftSemitones = 3.0f * (prize.GetMaxUses() - prize.GetUses()) / (prize.GetMaxUses() - 1);
+        float shiftSemitones = 3.0f * (prize.GetMaxUses() - prize.GetUses() - 1) / (prize.GetMaxUses() - 1);
         float shiftProportion = Mathf.Pow(2.0f, shiftSemitones / 12.0f);
         GameManager.Instance.mixer.SetFloat("Pitch", shiftProportion);
     }
