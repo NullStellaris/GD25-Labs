@@ -1,6 +1,7 @@
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Brick : MonoBehaviour {
     private Rigidbody2D box;
@@ -8,11 +9,19 @@ public class Brick : MonoBehaviour {
     public float bonkStrength = 5;
     public GameObject prizeContainer;
     private ItemLogic prize;
+
+
+    // prefab, so lets subscribe to reset here
     void Start() {
         box = GetComponent<Rigidbody2D>();
         origin = box.position;
         box.bodyType = RigidbodyType2D.Static;
         prize = prizeContainer.GetComponentInChildren<ItemLogic>();
+        GameManager.Instance.GlobalReset.AddListener(OnReset);
+    }
+
+    void OnDisable() {
+        GameManager.Instance.GlobalReset.RemoveListener(OnReset);
     }
 
     void FixedUpdate() {
@@ -30,8 +39,9 @@ public class Brick : MonoBehaviour {
                     box.bodyType = RigidbodyType2D.Dynamic;
                     box.AddForce(Vector2.up * 50, ForceMode2D.Impulse);
                     player.Bonk(bonkStrength);
-                    if (prize != null && !prize.IsUsed()) {
+                    if (prize != null && prize.GetUses() > 0) {
                         prize.OnSpawn();
+                        UpdatePitch();
                     }
                     return;
                 }
@@ -39,15 +49,14 @@ public class Brick : MonoBehaviour {
         }
     }
 
-    void OnEnable() {
-        GameManager.GlobalReset += OnReset;
-    }
-
-    void OnDisable() {
-        GameManager.GlobalReset -= OnReset;
+    void UpdatePitch() {
+        float shiftSemitones = 3.0f * (prize.GetMaxUses() - prize.GetUses()) / (prize.GetMaxUses() - 1);
+        float shiftProportion = Mathf.Pow(2.0f, shiftSemitones / 12.0f);
+        GameManager.Instance.mixer.SetFloat("Pitch", shiftProportion);
     }
 
     public void OnReset() {
+        GameManager.Instance.mixer.SetFloat("Pitch", 1.0f);
         if (prize != null) {
             prize.OnReset();
         }

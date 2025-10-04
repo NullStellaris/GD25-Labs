@@ -1,11 +1,10 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 
 public class CoinLogic : ItemLogic {
     public Animator coinAnimator;
-    public int quantity = 1;
-    private int uses;
-
     void Start() {
         uses = quantity;
     }
@@ -24,9 +23,5 @@ public class CoinLogic : ItemLogic {
     override public void OnReset() {
         coinAnimator.SetTrigger("onReset");
         uses = quantity;
-    }
-
-    public override bool IsUsed() {
-        return uses <= 0;
     }
 }

@@ -1,14 +1,14 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 
 [Serializable]
 public class Track {
     public string name;
     public AudioClip clip;
-    [Range(0f, 1f)]
-    public float volume = 1f;
     public bool loop;
+    public AudioMixerGroup output;
 
     [HideInInspector]
     public AudioSource source;
@@ -30,8 +30,8 @@ public class Jukebox : MonoBehaviour {
         foreach (Track t in tracks) {
             t.source = gameObject.AddComponent<AudioSource>();
             t.source.clip = t.clip;
-            t.source.volume = t.volume;
             t.source.loop = t.loop;
+            t.source.outputAudioMixerGroup = t.output;
         }
     }
     void Awake() {
@@ -71,3 +71,4 @@ public class Jukebox : MonoBehaviour {
         }
     }
 }
+

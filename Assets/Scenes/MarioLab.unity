@@ -289,33 +289,33 @@ MonoBehaviour:
   tracks:
   - name: level
     clip: {fileID: 8300000, guid: ea5aa982845407a4dafea14c294fe763, type: 3}
-    volume: 0.5
     loop: 1
-    source: {fileID: 0}
-  - name: dead
-    clip: {fileID: 8300000, guid: d7ef0ed7edbf8454f9233a3897bde303, type: 3}
-    volume: 1
-    loop: 0
+    output: {fileID: -5183806470499718957, guid: aa426628ecba0d841a471f451114ae8f, type: 2}
     source: {fileID: 0}
   - name: jump
     clip: {fileID: 8300000, guid: 763fddba17a7f294ea309e1cad19282d, type: 3}
-    volume: 0.6
     loop: 0
-    source: {fileID: 0}
-  - name: stomp
-    clip: {fileID: 8300000, guid: 6e40e0dd1734ae34c8a7c981417971f2, type: 3}
-    volume: 1
-    loop: 0
+    output: {fileID: 5996017938990410215, guid: aa426628ecba0d841a471f451114ae8f, type: 2}
     source: {fileID: 0}
   - name: twirl
     clip: {fileID: 8300000, guid: 0f7eefb0fa84e8945b31fe47e06833c8, type: 3}
-    volume: 0.3
     loop: 0
+    output: {fileID: 5996017938990410215, guid: aa426628ecba0d841a471f451114ae8f, type: 2}
+    source: {fileID: 0}
+  - name: stomp
+    clip: {fileID: 8300000, guid: 6e40e0dd1734ae34c8a7c981417971f2, type: 3}
+    loop: 0
+    output: {fileID: -3056618134437123628, guid: aa426628ecba0d841a471f451114ae8f, type: 2}
+    source: {fileID: 0}
+  - name: dead
+    clip: {fileID: 8300000, guid: d7ef0ed7edbf8454f9233a3897bde303, type: 3}
+    loop: 0
+    output: {fileID: 2827205825535943045, guid: aa426628ecba0d841a471f451114ae8f, type: 2}
     source: {fileID: 0}
   - name: coin
     clip: {fileID: 8300000, guid: 2e7e2dfd790aabb4d834f99ba0b71d1b, type: 3}
-    volume: 0.3
     loop: 0
+    output: {fileID: -7678319024224216038, guid: aa426628ecba0d841a471f451114ae8f, type: 2}
     source: {fileID: 0}
 --- !u!4 &136683601
 Transform:
@@ -598,6 +598,21 @@ MonoBehaviour:
   maxDistance: 0
   marioSprite: {fileID: 442141747}
   marioAnimator: {fileID: 442141746}
+  TookDamage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1849878101}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnPlayerDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &202222703
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2798,6 +2813,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815003110}
   m_CullTransparentMesh: 1
+--- !u!1 &903259150
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903259152}
+  - component: {fileID: 903259151}
+  m_Layer: 0
+  m_Name: OverlayManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &903259151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903259150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc7df90c5a75df46bfe38c2c06a4754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverlayManager
+  gameOverScreen: {fileID: 1783926570}
+  scoreText: {fileID: 1994109313}
+  gameOverText: {fileID: 1508153330}
+--- !u!4 &903259152
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903259150}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.10636, y: 5.52063, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &906801825
 GameObject:
   m_ObjectHideFlags: 0
@@ -4676,12 +4738,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c2ed3e01f4ce9428d0303b1049513a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  player: {fileID: 202222702}
-  enemies: {fileID: 1262970555}
-  obstacles: {fileID: 340067208}
-  gameOverScreen: {fileID: 1783926570}
-  scoreText: {fileID: 1994109313}
-  gameOverText: {fileID: 1508153330}
+  mixer: {fileID: 24100000, guid: aa426628ecba0d841a471f451114ae8f, type: 2}
+  GlobalReset:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 202222702}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnReset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 903259151}
+        m_TargetAssemblyTypeName: OverlayManager, Assembly-CSharp
+        m_MethodName: OnReset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  RefreshScore:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 903259151}
+        m_TargetAssemblyTypeName: OverlayManager, Assembly-CSharp
+        m_MethodName: DrawScore
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  GameOver:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 903259151}
+        m_TargetAssemblyTypeName: OverlayManager, Assembly-CSharp
+        m_MethodName: GameOver
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1867366739
 GameObject:
   m_ObjectHideFlags: 0
@@ -5834,6 +5948,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1849878100}
+  - {fileID: 903259152}
   - {fileID: 172156602}
   - {fileID: 939286380}
   - {fileID: 1951825057}

@@ -33,13 +33,13 @@ public class PlayerMovement : MonoBehaviour {
     public float maxDistance;
     private LayerMask stepMask;
     // input state variables
-    [System.NonSerialized] public float directionState = 0; // no need to Sign() this since its already unitized
-    [System.NonSerialized] public bool jumpState = false;
-    [System.NonSerialized] public bool inJump = false;
-    [System.NonSerialized] public bool jumpHeldState = false;
-    [System.NonSerialized] public bool sprintState = false;
+    [NonSerialized] public float directionState = 0; // no need to Sign() this since its already unitized
+    [NonSerialized] public bool jumpState = false;
+    [NonSerialized] public bool inJump = false;
+    [NonSerialized] public bool jumpHeldState = false;
+    [NonSerialized] public bool sprintState = false;
     // game state variables
-    [System.NonSerialized] public bool onGroundState = true;
+    [NonSerialized] public bool onGroundState = true;
     private float varJumpTimer = 0;
     private bool skidding = false;
     private bool jumped = false;
@@ -54,6 +54,9 @@ public class PlayerMovement : MonoBehaviour {
 
     // animation variables
     public Animator marioAnimator;
+
+    // events
+    public UnityEvent TookDamage;
 
     void Awake() {
         ReadInput = new UserInput();
@@ -199,15 +202,7 @@ public class PlayerMovement : MonoBehaviour {
         jumped = false;
     }
 
-    void OnEnable() {
-        GameManager.GlobalReset += OnReset;
-    }
-
-    void OnDisable() {
-        GameManager.GlobalReset -= OnReset;
-    }
-
-    void OnReset() {
+    public void OnReset() {
         // resurrect mario with necromancy
         alive = true;
         marioAnimator.SetTrigger("onReset");

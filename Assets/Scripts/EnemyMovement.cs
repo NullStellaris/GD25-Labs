@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyMovement : MonoBehaviour {
 
@@ -15,6 +16,14 @@ public class EnemyMovement : MonoBehaviour {
     private bool hitWall = false;
 
     public Animator goombaAnimator;
+
+    void OnEnable() {
+        GameManager.Instance.GlobalReset.AddListener(OnReset);
+    }
+
+    void OnDisable() {
+        GameManager.Instance.GlobalReset.RemoveListener(OnReset);
+    }
 
     void Start() {
         enemyBody = GetComponent<Rigidbody2D>();
@@ -70,14 +79,6 @@ public class EnemyMovement : MonoBehaviour {
             Movegoomba();
         }
         goombaAnimator.SetFloat("xSpeed", Mathf.Abs(moveSpeed));
-    }
-
-    void OnEnable() {
-        GameManager.GlobalReset += OnReset;
-    }
-
-    void OnDisable() {
-        GameManager.GlobalReset -= OnReset;
     }
 
     public void OnReset() {
