@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
     // Input Handler
@@ -34,7 +35,6 @@ public class PlayerMovement : MonoBehaviour {
     private LayerMask stepMask;
     // input state variables
     [NonSerialized] public float directionState = 0; // no need to Sign() this since its already unitized
-    [NonSerialized] public bool jumpState = false;
     [NonSerialized] public bool inJump = false;
     [NonSerialized] public bool jumpHeldState = false;
     [NonSerialized] public bool sprintState = false;
@@ -60,7 +60,57 @@ public class PlayerMovement : MonoBehaviour {
 
     void Awake() {
         ReadInput = new UserInput();
+
+        ReadInput.Player.Movement.performed += OnMove;
+        ReadInput.Player.Movement.canceled += OnMoveCanceled;
+
+        ReadInput.Player.Sprint.started += OnSprintStarted;
+        ReadInput.Player.Sprint.canceled += OnSprintCanceled;
+
+        ReadInput.Player.Jump.started += OnJumpStarted;
+        ReadInput.Player.Jump.canceled += OnJumpCanceled;
     }
+
+    private void UpdateSpriteDir() {
+        if (alive) {
+            if (directionState < 0 && faceRightState) {
+                faceRightState = false;
+                marioSprite.flipX = true;
+            }
+            else if (directionState > 0 && !faceRightState) {
+                faceRightState = true;
+                marioSprite.flipX = false;
+            }
+        }
+    }
+
+    private void OnMove(InputAction.CallbackContext context) {
+        directionState = context.ReadValue<Vector2>().x;
+        UpdateSpriteDir();
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext context) {
+        directionState = 0;
+    }
+
+    private void OnSprintStarted(InputAction.CallbackContext context) {
+        sprintState = true;
+    }
+
+    private void OnSprintCanceled(InputAction.CallbackContext context) {
+        sprintState = false;
+    }
+
+    private void OnJumpStarted(InputAction.CallbackContext context) {
+        jumpHeldState = true;
+        jumped = true; // lock that is only released by touching ground
+    }
+
+    private void OnJumpCanceled(InputAction.CallbackContext context) {
+        jumpHeldState = false;
+    }
+
+
 
     // Start is called before the first frame update
     void Start() {
@@ -79,24 +129,6 @@ public class PlayerMovement : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        // We do input monitoring here since execution is guaranteed every frame
-        directionState = ReadInput.Player.Movement.ReadValue<Vector2>().x;
-        sprintState = ReadInput.Player.Sprint.IsPressed();
-        jumpState = ReadInput.Player.Jump.WasPressedThisFrame();
-        jumpHeldState = ReadInput.Player.Jump.IsPressed();
-        if (jumpState) {
-            jumped = true;
-        }
-        // Sprite updates
-        // toggle state
-        if (directionState == -1 && faceRightState && alive) {
-            faceRightState = false;
-            marioSprite.flipX = true;
-        }
-        if (directionState == 1 && !faceRightState && alive) {
-            faceRightState = true;
-            marioSprite.flipX = false;
-        }
         marioAnimator.SetBool("onJump", inJump || stomped);
         marioAnimator.SetBool("onSkid", skidding);
         marioAnimator.SetFloat("xSpeed", Mathf.Abs(marioBody.linearVelocityX));
