@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 
-public class OverlayManager : MonoBehaviour {
+public class OverlayManager : Singleton<OverlayManager> {
     public Canvas gameOverScreen;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;

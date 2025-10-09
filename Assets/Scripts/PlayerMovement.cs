@@ -57,6 +57,7 @@ public class PlayerMovement : MonoBehaviour {
 
     // events
     public UnityEvent TookDamage;
+    public UnityEvent<int> Scored;
 
     void Awake() {
         ReadInput = new UserInput();
@@ -155,18 +156,17 @@ public class PlayerMovement : MonoBehaviour {
         return (bool)Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, maxDistance, stepMask);
     }
 
-    [ContextMenu("Kill Player")]
     public void Damaged() {
-        alive = false;
         marioAnimator.SetTrigger("onDeath");
-        GameManager.Instance.OnPlayerDeath();
+        alive = false;
+        TookDamage.Invoke();
     }
 
     public void Stomp() {
         stomped = true;
         marioBody.linearVelocityY = stompAccel;
         Jukebox.Instance.PlaySimul("stomp");
-        GameManager.Instance.OnScore(2);
+        Scored.Invoke(2);
     }
 
     public void Bonk(float force) {

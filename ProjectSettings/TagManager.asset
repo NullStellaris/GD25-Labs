@@ -19,7 +19,7 @@ TagManager:
   - Enemies
   - Obstacles
   - Border
-  - 
+  - Interactive
   - 
   - 
   - 
@@ -42,8 +42,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 284574017
+    locked: 0
+  - name: Enemies
+    uniqueID: 1643054007
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Castle
+    uniqueID: 551880235
     locked: 0
   m_RenderingLayers:
   - Default

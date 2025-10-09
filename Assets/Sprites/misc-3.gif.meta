@@ -593,7 +593,7 @@ TextureImporter:
         width: 8
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -615,7 +615,7 @@ TextureImporter:
         width: 4
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -637,7 +637,7 @@ TextureImporter:
         width: 1
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -659,7 +659,7 @@ TextureImporter:
         width: 4
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -668,6 +668,336 @@ TextureImporter:
       bones: []
       spriteID: 5b61c3d46b72ad942839dd3cbd67c4da
       internalID: -1273718562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Square_Block
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 1094
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b835b2cec72935f4584a2be7dd0657e0
+      internalID: 1116069879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: castle_left
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 954
+        width: 40
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85f2f0f2c1004a945ba4f3bc7d4c305e
+      internalID: -1929085574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: castle_right
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 954
+        width: 40
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e992322f50a2034f98c4480d3f90dda
+      internalID: 1222184667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick_Dark
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1189
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86626cd503b73f145bc9631d9a0fc6c4
+      internalID: -1627040032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inactive_Block_Dark
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1152
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 781f898628c761b4f912342ed108ecd6
+      internalID: -1487427761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ground_Dark
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9879ce6059dfb9e408b8fa38ba22e093
+      internalID: -1554291765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Square_Block_Dark
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1094
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66aba53eba62eb049bea35bcebc4af7e
+      internalID: 544634406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Coin_Dark_1
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 1059
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 781a73413f6b5434397acbd57a1454d4
+      internalID: 2049177976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Question_Block_Dark_1
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 1057
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 851e6f1155a2f7c46a542e1203f0ab54
+      internalID: 883059219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Question_Block_Dark_2
+      rect:
+        serializedVersion: 2
+        x: 390
+        y: 1057
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6c738d2cb2931c44ad5a55529fa366a
+      internalID: -541327131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Question_Block_Dark_3
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 1057
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 921b223089a3d6a43b42cc08a189e293
+      internalID: 1930257608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Coin_Dark_2
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1059
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76979abf5985dcf48a0d7cea54e3d6fc
+      internalID: -322556253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Coin_Dark_3
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 1059
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5273503be275e394390b6ce1dfa6d6f1
+      internalID: 1679544109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lakitu_Cloud
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 913
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4db4e6d70ae4b541832ad6eaa326414
+      internalID: 1975719743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Brick_Dark_Seamless
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1133
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64bbed90842bd3c459762c8a884a7a12
+      internalID: -2044893225
       vertices: []
       indices: 
       edges: []
@@ -697,20 +1027,35 @@ TextureImporter:
       BoxCoin_2: -1273718562
       BoxCoin_3: -1327419403
       BoxCoin_4: 764152288
+      Brick_Dark: -1627040032
+      Brick_Dark_Seamless: -2044893225
       Brick_Top: 1371960512
       Coin: -9967739
+      Coin_Dark_1: 2049177976
+      Coin_Dark_2: -322556253
+      Coin_Dark_3: 1679544109
       Goomba_A: 625705589
       Goomba_B: -679577783
       Goomba_Squash: -2117769025
       Ground_Brown: -1774987757
+      Ground_Dark: -1554291765
       Inactive_Block: 297663601
+      Inactive_Block_Dark: -1487427761
+      Lakitu_Cloud: 1975719743
       Magic_Mushroom: 1612694904
       Pipe_Body: 630614881
       Pipe_Head: -1785386173
       Question_Block_1: 770621876
       Question_Block_2: 556354746
       Question_Block_3: 1943180000
+      Question_Block_Dark_1: 883059219
+      Question_Block_Dark_2: -541327131
+      Question_Block_Dark_3: 1930257608
       Small_Hill: 1526082783
+      Square_Block: 1116069879
+      Square_Block_Dark: 544634406
+      castle_left: -1929085574
+      castle_right: 1222184667
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

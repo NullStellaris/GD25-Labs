@@ -22,8 +22,7 @@ public class Track {
     }
 }
 
-public class Jukebox : MonoBehaviour {
-    public static Jukebox Instance;
+public class Jukebox : Singleton<Jukebox> {
     public Track[] tracks;
 
     void Start() {
@@ -34,16 +33,7 @@ public class Jukebox : MonoBehaviour {
             t.source.outputAudioMixerGroup = t.output;
         }
     }
-    void Awake() {
-        if (Instance == null) {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            Destroy(gameObject);
-            return;
-        }
-    }
+
     public void PlayOver(string name) {
         StopAll();
         Track track = Array.Find(tracks, track => track.name == name);

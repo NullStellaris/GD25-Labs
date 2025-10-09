@@ -11,30 +11,17 @@ using UnityEditor;
 using UnityEngine.Events;
 using UnityEngine.Audio;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : Singleton<GameManager> {
     // Utility Assets
     public AudioMixer mixer;
 
     [NonSerialized] public int score = 0; // we don't want this to show up in the inspector
     [NonSerialized] public int countScoreState = -1;
 
-    public static GameManager Instance;
-
     // Events
     public UnityEvent GlobalReset;
     public UnityEvent<int> RefreshScore;
     public UnityEvent<int> GameOver;
-
-
-    void Awake() {
-        if (Instance == null) {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            Destroy(gameObject);
-        }
-    }
 
     void Start() {
         Jukebox.Instance.PlayOver("level");
