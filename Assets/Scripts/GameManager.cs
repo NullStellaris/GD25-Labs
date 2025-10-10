@@ -38,6 +38,8 @@ public class GameManager : Singleton<GameManager> {
 
         // Reset SO values
         score.Value = 0;
+
+        RefreshScore.Invoke();
     }
 
     void SetButtonsInteractable(bool state) {
@@ -77,6 +79,7 @@ public class GameManager : Singleton<GameManager> {
     private void ResetGame() {
         // reset score
         score.Value = 0;
+        RefreshScore.Invoke();
         // reset level audio
         Jukebox.Instance.PlayOver("level");
     }
