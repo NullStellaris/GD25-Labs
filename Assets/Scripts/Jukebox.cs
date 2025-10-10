@@ -20,6 +20,14 @@ public class Track {
     public void Stop() {
         source.Stop();
     }
+
+    public void Pause() {
+        source.Pause();
+    }
+
+    public void UnPause() {
+        source.UnPause();
+    }
 }
 
 public class Jukebox : Singleton<Jukebox> {
@@ -58,6 +66,18 @@ public class Jukebox : Singleton<Jukebox> {
     public void StopAll() {
         foreach (Track track in tracks) {
             track.Stop();
+        }
+    }
+
+    public void PauseAll() {
+        foreach (Track track in tracks) {
+            track.Pause();
+        }
+    }
+
+    public void ResumeAll() {
+        foreach (Track track in tracks) {
+            track.UnPause();
         }
     }
 }

@@ -265,6 +265,7 @@ MonoBehaviour:
   bonkStrength: 5
   questionAnimator: {fileID: 3297398343387856050}
   prizeContainer: {fileID: 7911652264085832231}
+  GlobalReset: {fileID: 11400000, guid: b7df7d90c1b574e4a86784920d5965ef, type: 2}
 --- !u!95 &3297398343387856050
 Animator:
   serializedVersion: 7

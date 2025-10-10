@@ -7,21 +7,32 @@ public class OverlayManager : Singleton<OverlayManager> {
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
 
+    // SOs
+    public IntVariable score;
+    public GameEvent GlobalReset;
+    public GameEvent RefreshScore;
+    public GameEvent GameOver;
+
+    // Register Event SO listeners
     void Start() {
+        GlobalReset.RegisterListener(OnReset);
+        RefreshScore.RegisterListener(OnDrawScore);
+        GameOver.RegisterListener(OnGameOver);
+
         gameOverScreen.enabled = false;
     }
 
-    public void DrawScore(int score) {
-        scoreText.text = "Score: " + score.ToString();
+    public void OnDrawScore() {
+        scoreText.text = "Score: " + score.Value.ToString();
     }
 
-    public void GameOver(int score) {
+    public void OnGameOver() {
         gameOverScreen.enabled = true;
-        gameOverText.text = "Game Over!<br><br>Score: " + score.ToString();
+        gameOverText.text = "Game Over!<br><br>Score: " + score.Value.ToString();
     }
 
     public void OnReset() {
         gameOverScreen.enabled = false;
-        DrawScore(0);
+        OnDrawScore();
     }
 }

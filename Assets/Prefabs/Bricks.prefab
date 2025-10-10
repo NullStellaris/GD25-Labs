@@ -263,6 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Brick
   bonkStrength: 5
   prizeContainer: {fileID: 7258988616388508271}
+  GlobalReset: {fileID: 11400000, guid: b7df7d90c1b574e4a86784920d5965ef, type: 2}
 --- !u!1 &7258988616388508271
 GameObject:
   m_ObjectHideFlags: 0

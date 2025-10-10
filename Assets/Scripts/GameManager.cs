@@ -10,21 +10,34 @@ using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.Events;
 using UnityEngine.Audio;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : Singleton<GameManager> {
     // Utility Assets
     public AudioMixer mixer;
-
-    [NonSerialized] public int score = 0; // we don't want this to show up in the inspector
     [NonSerialized] public int countScoreState = -1;
 
-    // Events
-    public UnityEvent GlobalReset;
-    public UnityEvent<int> RefreshScore;
-    public UnityEvent<int> GameOver;
+    // SO Events
+    // send
+    public GameEvent GlobalReset;
+    public GameEvent RefreshScore;
+    public GameEvent GameOver;
+    // recv
+    public GameEvent TookDamage;
+    public IntGameEvent ScoreGain;
+
+    // SOs
+    public IntVariable score;
+    public StringVariable lastScene;
 
     void Start() {
+        // Register SO Listeners
+        TookDamage.RegisterListener(OnPlayerDeath);
+        ScoreGain.RegisterListener(OnScore);
         Jukebox.Instance.PlayOver("level");
+
+        // Reset SO values
+        score.Value = 0;
     }
 
     void SetButtonsInteractable(bool state) {
@@ -35,8 +48,8 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public void OnScore(int gain) {
-        score += gain;
-        RefreshScore.Invoke(score);
+        score.Add(gain);
+        RefreshScore.Invoke();
     }
 
     public void OnPlayerDeath() {
@@ -50,7 +63,7 @@ public class GameManager : Singleton<GameManager> {
         Jukebox.Instance.PlayOver("dead");
         yield return new WaitForSecondsRealtime(3.5f);
         SetButtonsInteractable(true);
-        GameOver.Invoke(score);
+        GameOver.Invoke();
     }
 
     public void RestartButtonCallback(int input) {
@@ -63,7 +76,7 @@ public class GameManager : Singleton<GameManager> {
 
     private void ResetGame() {
         // reset score
-        score = 0;
+        score.Value = 0;
         // reset level audio
         Jukebox.Instance.PlayOver("level");
     }

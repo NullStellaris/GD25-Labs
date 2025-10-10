@@ -271,6 +271,7 @@ MonoBehaviour:
   decayTime: 1
   goombaSprite: {fileID: 579972610369638660}
   goombaAnimator: {fileID: 2675558932989040580}
+  GlobalReset: {fileID: 11400000, guid: b7df7d90c1b574e4a86784920d5965ef, type: 2}
 --- !u!61 &3083041589599720572
 BoxCollider2D:
   m_ObjectHideFlags: 0

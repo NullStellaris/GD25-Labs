@@ -78,8 +78,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1299263321
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 1171083919, guid: 82bc45c4496284f4c823d1b837f65ec4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -128,18 +128,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CoinLogic
   quantity: 1
   coinAnimator: {fileID: 3484852424206725509}
-  Scored:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnScore
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  ScoreGain: {fileID: 11400000, guid: 2669948f388a2ea488e221894de97026, type: 2}
+  GlobalReset: {fileID: 11400000, guid: b7df7d90c1b574e4a86784920d5965ef, type: 2}

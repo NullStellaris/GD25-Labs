@@ -56,8 +56,11 @@ public class PlayerMovement : MonoBehaviour {
     public Animator marioAnimator;
 
     // events
-    public UnityEvent TookDamage;
-    public UnityEvent<int> Scored;
+    // send
+    public GameEvent TookDamage;
+    public IntGameEvent ScoreGain;
+    // recv
+    public GameEvent GlobalReset;
 
     void Awake() {
         ReadInput = new UserInput();
@@ -115,6 +118,9 @@ public class PlayerMovement : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        // Register SO Event Listeners
+        GlobalReset.RegisterListener(OnReset);
+
         alive = true;
         // enable input
         ReadInput.Player.Enable();
@@ -166,7 +172,7 @@ public class PlayerMovement : MonoBehaviour {
         stomped = true;
         marioBody.linearVelocityY = stompAccel;
         Jukebox.Instance.PlaySimul("stomp");
-        Scored.Invoke(2);
+        ScoreGain.Invoke(2);
     }
 
     public void Bonk(float force) {

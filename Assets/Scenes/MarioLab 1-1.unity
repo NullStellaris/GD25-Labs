@@ -3079,6 +3079,7 @@ MonoBehaviour:
   gameOverScreen: {fileID: 1783926570}
   scoreText: {fileID: 1994109313}
   gameOverText: {fileID: 1508153330}
+  score: {fileID: 0}
 --- !u!4 &903259152
 Transform:
   m_ObjectHideFlags: 0
@@ -5247,6 +5248,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  score: {fileID: 11400000, guid: 10c162ebed718f34a9248c1124e4a221, type: 2}
+  lastScene: {fileID: 11400000, guid: 9eab0ead72473a44b907cb8f06bbe7ca, type: 2}
 --- !u!1 &1867366739
 GameObject:
   m_ObjectHideFlags: 0

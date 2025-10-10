@@ -10,18 +10,19 @@ public class Brick : MonoBehaviour {
     public GameObject prizeContainer;
     private ItemLogic prize;
 
+    // SO Events
+    // recv
+    public GameEvent GlobalReset;
 
     // prefab, so lets subscribe to reset here
     void Start() {
+        // Register SO Listeners
+        GlobalReset.RegisterListener(OnReset);
+
         box = GetComponent<Rigidbody2D>();
         origin = box.position;
         box.bodyType = RigidbodyType2D.Static;
         prize = prizeContainer.GetComponentInChildren<ItemLogic>();
-        GameManager.Instance.GlobalReset.AddListener(OnReset);
-    }
-
-    void OnDisable() {
-        GameManager.Instance.GlobalReset.RemoveListener(OnReset);
     }
 
     void FixedUpdate() {

@@ -17,15 +17,14 @@ public class EnemyMovement : MonoBehaviour {
 
     public Animator goombaAnimator;
 
-    void OnEnable() {
-        GameManager.Instance.GlobalReset.AddListener(OnReset);
-    }
-
-    void OnDisable() {
-        GameManager.Instance.GlobalReset.RemoveListener(OnReset);
-    }
+    // SO Events
+    // recv
+    public GameEvent GlobalReset;
 
     void Start() {
+        // Register SO Listeners
+        GlobalReset.RegisterListener(OnReset);
+
         enemyBody = GetComponent<Rigidbody2D>();
         // get starting position
         originalPos = transform.localPosition;
